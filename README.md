@@ -1,0 +1,3 @@
+Well this is a Games Project I've started.
+I'm spliting this into 2 main sections, the client and the server, the client is what you will see here and it is open source, the server on the otherhand is not, it may be in the future but for now it's not. This meens anything this client can do is documented for you to do as well, with something so simple as curl or so complex as a 3d client writen in C++ or whatever.
+Oh and thanks to twitter for bootstrap, that's awesome.
