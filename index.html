@@ -14,11 +14,14 @@
 
 	<script type="text/javascript">
 
-	var evalEnabled	= true;
+	var evalEnabled	= false;
 	var systemUser = "AUTHORITY/SYSTEM";
 	var currentUser = systemUser; 
+	var onLocalSystem = true;
 
 	initAll(systemUser);
+
+	var currentSystem = localSystem;
 
 	$(document).ready(function () {
 		console.log($("#terminal-ele"));
@@ -41,29 +44,50 @@
 				this.echo("mkdir name parent: 	Creates a new Directory");
 				this.echo("whoami:				Display the Current User");
 				this.echo("ssh systemID:          Trys to log into another system");
-				this.echo("touch dir name		Creates a new File");
+				this.echo("touch dir name:		Creates a new File");
+				this.echo("sysinfo:   			Gets Current System Info");
+				if (!onLocalSystem) {
+					this.echo("disconnect:          Disconnect from the current system");
+				}
+				this.echo("logout or exit: 		Logs out from the current system");
 				this.echo("clear: 				Clears the console");
 			},
 
 			ls: function (dir, args) {
-				listDirectory(localSystem, dir, this.echo, false);
+				listDirectory(currentSystem, dir, this.echo, false);
+			},
+
+			dir: function (dir, args) {
+				listDirectory(currentSystem, dir, this.echo, false);
 			},
 
 			ll: function (dir, args) {
-				listDirectory(localSystem, dir, this.echo, true);
+				listDirectory(currentSystem, dir, this.echo, true);
 			},
 
 			mkdir: function (dir, parent) {
 				if (dir === undefined || parent === undefined) {this.echo("mkdir name parent"); }
-				createDirectory(localSystem, dir, parent);
+				createDirectory(currentSystem, currentUser, dir, parent);
 			},
 
 			whoami: function () {
-				this.echo(currentUser);
+				this.echo(getUsername(currentUser));
+			},
+
+			touch: function (dir, name) {
+				createFile(currentSystem, currentUser, dir, name)
+			},
+
+			sysinfo: function (dir, name) {
+				this.echo("Current System: " + currentSystem.name + " : IPID : " + currentSystem.ip);
 			},
 
 			logout: function () {
 				this.logout();
+			},
+
+			disconnect: function () {
+
 			},
 
 			clear: function () {
@@ -76,7 +100,7 @@
 			greetings: 'Systems Game',
         	name: 'systems',
         	height: 200,
-        	prompt: 'Vbitz@systems.vbitz.com $',
+        	prompt: 'Vbitz@' + currentSystem.ip + '$',
         	login: function (user, pass, callback) {
         		if (user == "admin" && pass == "admin") {
         			callback("works");

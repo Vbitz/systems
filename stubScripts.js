@@ -23,7 +23,10 @@ function canReadDir(dir, user) {
 }
 
 function canReadFile(file, user) {
-
+	if (file.owner === user) {
+		return true;
+	}
+	return false;
 }
 
 function createDirectory(system, user, dirName, parent) {
@@ -56,6 +59,10 @@ function initFilesystem(system, user) {
 	createDirectory(system, user, "/users", "/");
 	createDirectory(system, user, "/res", "/");
 	createDirectory(system, user, "/bin", "/");
+}
+
+function getUsername(user) {
+	return user;
 }
 
 function listDirectory(system, dir, output, detail) {
