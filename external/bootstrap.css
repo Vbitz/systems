@@ -306,7 +306,6 @@ h4,
 h5,
 h6 {
   margin: 0;
-  font-weight: bold;
   color: #333333;
   text-rendering: optimizelegibility;
 }
@@ -3469,6 +3468,7 @@ a.thumbnail:hover {
   border-radius: 6px;
 }
 .hero-unit h1 {
+  font-weight: lighter;
   margin-bottom: 0;
   font-size: 60px;
   line-height: 1;

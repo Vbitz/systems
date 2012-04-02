@@ -3,10 +3,93 @@
 	<title>Systems Game : Reference Implamention</title>
 
 	<link rel="stylesheet" href="external/bootstrap.css">
+	<link rel="stylesheet" href="external/jquery.terminal.css">
+
+	<link rel="stylesheet" href="style.css">
+
+	<script type="text/javascript" src="external/jquery.min.js"></script>
+	<script type="text/javascript" src="external/jquery.terminal.js"></script>
+
+	<script type="text/javascript" src="stubScripts.js"></script>
+
+	<script type="text/javascript">
+
+	var evalEnabled	= true;
+	var systemUser = "AUTHORITY/SYSTEM";
+	var currentUser = systemUser; 
+
+	initAll(systemUser);
+
+	$(document).ready(function () {
+		console.log($("#terminal-ele"));
+		$("#terminal-ele").terminal({
+			eval: function (arg1) {
+				if (!evalEnabled) this.echo("[[;#f00;]Error: not available]"); return;
+				this.echo("running: " + arg1);
+				result = window.eval("(" + arg1 + ")");
+				if (result !== null) {
+					this.echo(result);
+				}
+			},
+
+			help: function () {
+				if (evalEnabled) {
+					this.echo("eval command: 		 Runs Javascript");
+				}
+				this.echo("ls [dir] [args]:   	Lists a directory, defaults to /");
+				this.echo("ll [dir] [args]:   	Lists a directory with more detail, defaults to /");
+				this.echo("mkdir name parent: 	Creates a new Directory");
+				this.echo("whoami:				Display the Current User");
+				this.echo("ssh systemID:          Trys to log into another system");
+				this.echo("touch dir name		Creates a new File");
+				this.echo("clear: 				Clears the console");
+			},
+
+			ls: function (dir, args) {
+				listDirectory(localSystem, dir, this.echo, false);
+			},
+
+			ll: function (dir, args) {
+				listDirectory(localSystem, dir, this.echo, true);
+			},
+
+			mkdir: function (dir, parent) {
+				if (dir === undefined || parent === undefined) {this.echo("mkdir name parent"); }
+				createDirectory(localSystem, dir, parent);
+			},
+
+			whoami: function () {
+				this.echo(currentUser);
+			},
+
+			logout: function () {
+				this.logout();
+			},
+
+			clear: function () {
+				this.clear();
+			},
+
+			test: function () {
+			}
+		}, {
+			greetings: 'Systems Game',
+        	name: 'systems',
+        	height: 200,
+        	prompt: 'Vbitz@systems.vbitz.com $',
+        	login: function (user, pass, callback) {
+        		if (user == "admin" && pass == "admin") {
+        			callback("works");
+        		} else {
+        			callback(false);
+        		}
+        	}
+		}).css("height", "auto").css("bottom", "5px");
+	});
+
+	</script>
 </head>
 <body>
-	<div class="container">
-		<h1>Systems Game</h1>
-	</div>
+	<div id="terminal-ele"></div>
 </body>
 </html>

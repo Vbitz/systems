@@ -1,0 +1,10 @@
+#terminal-ele {
+	position: absolute;
+	left: 5px;
+	right: 5px;
+	top: 5px;
+}
+
+body {
+	background-color: #000;
+}
