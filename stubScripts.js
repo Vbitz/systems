@@ -1,15 +1,42 @@
+// in the future all of these will preform callbacks to the server
+
+function addUser(name, pass, system, init) {
+	newUser = {
+		name: name,
+		pass: pass
+	};
+	if (init) {
+		users = {};
+		users[name] = newUser;
+		return users;
+	} else {
+		systems[system].users[name] = newUser;
+	}
+}
+
+systems = {};
+
 function createSystem (name, ipid) {
-	return {
+	newSystem = {
 		name: name,
 		ip: ipid,
 
-		devices: {}
+		devices: {},
+		users: addUser("AUTHORITY/SYSTEM", "weak", null, true)
 	};
+	systems[ipid] = newSystem;
+	return newSystem;
+}
+
+function tryLogin (system, user, pass) {
+	if (system.users[user] !== undefined) {
+		return system.users[user].pass == pass;
+	} else { return false; }
 }
 
 function getIPID() {return 0;}
 
-var localSystem = createSystem("localhost", getIPID());
+var localSystem = createSystem("testSystem", getIPID());
 
 function initAll(user) {
 	initFilesystem(localSystem, user);

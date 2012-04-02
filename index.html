@@ -23,6 +23,10 @@
 
 	var currentSystem = localSystem;
 
+	function setLocalSystem() {
+
+	}
+
 	$(document).ready(function () {
 		console.log($("#terminal-ele"));
 		$("#terminal-ele").terminal({
@@ -49,7 +53,7 @@
 				if (!onLocalSystem) {
 					this.echo("disconnect:          Disconnect from the current system");
 				}
-				this.echo("logout or exit: 		Logs out from the current system");
+				this.echo("logout or exit: 	   Logs out from the current system");
 				this.echo("clear: 				Clears the console");
 			},
 
@@ -87,7 +91,8 @@
 			},
 
 			disconnect: function () {
-
+				if (onLocalSystem) return;
+				setLocalSystem();
 			},
 
 			clear: function () {
@@ -100,10 +105,11 @@
 			greetings: 'Systems Game',
         	name: 'systems',
         	height: 200,
-        	prompt: 'Vbitz@' + currentSystem.ip + '$',
+        	prompt: 'Vbitz@' + currentSystem.name + "|" + currentSystem.ip + '$',
         	login: function (user, pass, callback) {
-        		if (user == "admin" && pass == "admin") {
+        		if (tryLogin(currentSystem, user, pass)) {
         			callback("works");
+        			currentUser = user;
         		} else {
         			callback(false);
         		}
