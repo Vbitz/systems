@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="external/jquery.terminal.js"></script>
 
 	<script type="text/javascript" src="stubScripts.js"></script>
+	<script type="text/javascript" src="apps.js"></script>
 
 	<script type="text/javascript">
 
@@ -54,6 +55,7 @@
 				this.echo("ssh systemID:          Trys to log into another system");
 				this.echo("touch dir name:		Creates a new File");
 				this.echo("sysinfo:   			Gets Current System Info");
+				this.echo("run app:             Runs a Application");
 				if (!onLocalSystem) {
 					this.echo("disconnect:          Disconnect from the current system");
 				}
@@ -92,6 +94,14 @@
 
 			logout: function () {
 				this.logout();
+			},
+
+			run: function (app) {
+				if (apps[app] !== undefined) {
+					
+				} else {
+					this.echo("App not Found");
+				}
 			},
 
 			disconnect: function () {
