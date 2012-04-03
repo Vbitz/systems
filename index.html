@@ -55,7 +55,8 @@
 				this.echo("ssh systemID:          Trys to log into another system");
 				this.echo("touch dir name:		Creates a new File");
 				this.echo("sysinfo:   			Gets Current System Info");
-				this.echo("run app:             Runs a Application");
+				this.echo("run app:               Runs a Application");
+				this.echo("applist:               Lists all apps");
 				if (!onLocalSystem) {
 					this.echo("disconnect:          Disconnect from the current system");
 				}
@@ -98,9 +99,17 @@
 
 			run: function (app) {
 				if (apps[app] !== undefined) {
-					
+					if (fileExists(currentSystem, "/bin/" + app)) {
+						apps[app](currentSystem, currentUser, this);
+					}
 				} else {
 					this.echo("App not Found");
+				}
+			},
+
+			applist: function () {
+				for (var item in apps) {
+					this.echo(item);
 				}
 			},
 

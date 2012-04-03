@@ -42,6 +42,10 @@ function initAll(user) {
 	initFilesystem(localSystem, user);
 }
 
+function fileExists(sys, name) {
+	return true;
+}
+
 function canReadDir(dir, user) {
 	if (dir.owner == user) {
 		return true;
@@ -102,7 +106,7 @@ function listDirectory(system, dir, output, detail) {
 	for (i = 0; i < system.fileSystem[sdir].children.length; i++) {
 		var item = system.fileSystem[sdir].children[i];
 		if (detail) {
-			
+			output("[[;#fff;]DIR  owner=" + system.fileSystem[system.fileSystem[sdir].children[i]].owner + "] : " + item);
 		} else {
 			output("[[;#fff;]DIR  ]" + item);
 		}
